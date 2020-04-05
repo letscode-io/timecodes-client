@@ -1,3 +1,41 @@
 /**
  * Place your custom CSS styles here.
  **/
+
+.youanno {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 20px;
+  margin-bottom: 14px;
+}
+
+.youanno-button {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.youanno-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.youanno-button-text {
+  color:rgb(96, 96, 96);
+  cursor:pointer;
+  display:inline-block;
+  font-family:Roboto, Arial, sans-serif;
+  font-size:13px;
+  font-weight:500;
+  letter-spacing:0.007px;
+  overflow-x:hidden;
+  overflow-y:hidden;
+  text-overflow:ellipsis;
+  text-transform:uppercase;
+  white-space:nowrap;
+  vertical-align: middle;
+}
+
+.youanno-hidden {
+  display: none;
+}
