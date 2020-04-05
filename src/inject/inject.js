@@ -6,16 +6,18 @@ var icon = `
 </svg>
 `;
 
-chrome.extension.sendMessage({}, function() {
-  var readyStateCheckInterval = setInterval(function() {
+chrome.extension.sendMessage({}, function () {
+  var readyStateCheckInterval = setInterval(function () {
     if (document.readyState === "complete") {
       clearInterval(readyStateCheckInterval);
 
-      var annotator = document.createElement('div');
-      annotator.className = 'youanno';
-      annotator.id = 'youanno';
+      var annotator = document.createElement("div");
+      annotator.className = "youanno";
+      annotator.id = "youanno";
 
-      var videoLink = `${location.pathname}${location.search}`
+      var getAnno = fetch("https://78e0e858.ngrok.io/annotations/0zU3AaX6APo");
+
+      var videoLink = `${location.pathname}${location.search}`;
       annotator.innerHTML = `
         <div>
           <a href="#" class="youanno-button">
@@ -28,42 +30,91 @@ chrome.extension.sendMessage({}, function() {
           </a>
         </div>
         <div class="youanno-content youanno-hidden">
-          <ul>
-            <li>
-              <a href="${videoLink}&t=65s" data-skip="65">1:05</a> - Start
-            </li>
-            <li>
-              <a href="${videoLink}&t=65s" data-skip="165">1:05</a> - Middle
-            </li>
-            <li>
-              <a href="${videoLink}&t=65s" data-skip="265">1:05</a> - Wow
-            </li>
-            <li>
-              <a href="${videoLink}&t=65s" data-skip="365">1:05</a> - End
-            </li>
+          <ul class="youanno-list">
           </ul>
+        </div>
+        <div>
+          <form class="youanno-form" action="">
+            <input class="youanno-form-seconds" name="seconds" type="number" placeholder="Seconds" />
+            <input class="youanno-form-text" name="text" placeholder="Text" />
+            <button type="submit" class="youanno-submit">Submit</button>
+          </form>
         </div>
       `;
 
-      var video = document.querySelector('video.video-stream');
+      var updateAnnotations = function () {
+        getAnno.then(
+          (response) => {
+            response.json().then((annotations) => {
+              var html = annotations
+                .map((ann) => {
+                  var time = `${Math.floor(ann.seconds / 60)}:${
+                    ann.seconds % 60
+                  }`;
 
-      annotator.addEventListener('click', function(e) {
+                  return `
+                <li class="youanno-annotation">
+                  <a href="${videoLink}" data-skip="${ann.seconds}">${time}</a> - ${ann.text}
+                </li>
+              `;
+                })
+                .join("");
+
+              annotator.querySelector(".youanno-list").innerHTML = html;
+            });
+          },
+          () => {
+            annotator.querySelector(".youanno-list").innerHTML =
+              "Ай ай ай!!!!!";
+          }
+        );
+      };
+      updateAnnotations();
+
+      var video = document.querySelector("video.video-stream");
+
+      annotator.addEventListener("click", function (e) {
         e.preventDefault();
 
-        if (e.target.tagName == 'A') {
+        if (e.target.tagName == "A") {
           video.currentTime = e.target.dataset.skip;
         }
       });
 
-      annotator.querySelector('.youanno-button').addEventListener('click', function(e) {
-        e.preventDefault();
+      annotator
+        .querySelector(".youanno-button")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
 
-        var content = annotator.querySelector('.youanno-content');
-        content.classList.toggle('youanno-hidden');
+          var content = annotator.querySelector(".youanno-content");
+          content.classList.toggle("youanno-hidden");
+        });
+
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("youanno-submit")) {
+          e.preventDefault();
+          console.log("YouAnno: ", e);
+          var formTag = document.querySelector(".youanno-form");
+          var form = {
+            text: formTag.querySelector("[name=text]").value,
+            seconds: formTag.querySelector("[name=seconds]").value,
+          };
+
+          fetch("https://78e0e858.ngrok.io/annotation", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify(form),
+          }).then((response) => {
+            formTag.reset();
+            updateAnnotations();
+          });
+        }
       });
 
-      var primaryInner = document.getElementById('primary-inner');
-      var ticketShelf = document.getElementById('ticket-shelf');
+      var primaryInner = document.getElementById("primary-inner");
+      var ticketShelf = document.getElementById("ticket-shelf");
 
       primaryInner.insertBefore(annotator, ticketShelf);
     }
