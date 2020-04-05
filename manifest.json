@@ -1,8 +1,8 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
+  "name": "YouAnno: Youtube video annotator",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
+  "description": "Pretty annotations for youtube videos.",
   "homepage_url": "http://extensionizr.com",
   "icons": {
     "16": "icons/icon16.png",
@@ -25,20 +25,9 @@
   ],
   "content_scripts": [
     {
-      "matches": [
-        "https://www.youtube.com/*"
-      ],
-      "css": [
-        "src/inject/inject.css"
-      ]
-    },
-    {
-      "matches": [
-        "https://www.youtube.com/*"
-      ],
-      "js": [
-        "src/inject/inject.js"
-      ]
+      "matches": [ "*://www.youtube.com/*" ],
+      "css": [ "src/inject/inject.css" ],
+      "js": [ "src/inject/inject.js" ]
     }
   ]
 }
