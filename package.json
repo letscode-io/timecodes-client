@@ -1,0 +1,17 @@
+{
+  "name": "youanno",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:letscode-io/youanno.git",
+  "author": "Let's Code <https://github.com/letscode-io>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel src/inject/index.js src/inject/inject.css --no-hmr --out-file inject --no-source-maps",
+    "build": "parcel build src/inject/index.js src/inject/inject.css --out-file inject --no-content-hash"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-svelte": "^4.0.6",
+    "svelte": "^3.20.1"
+  }
+}
