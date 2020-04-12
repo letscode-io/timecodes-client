@@ -10,8 +10,13 @@
     "build": "parcel build src/inject/index.js src/inject/inject.css --out-file inject --no-content-hash"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
     "svelte": "^3.20.1"
-  }
+  },
+  "browserlist": [
+    "last 2 Chrome versions"
+  ]
 }
