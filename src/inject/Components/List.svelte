@@ -26,6 +26,9 @@
     {#await items}
       <li>Loading...</li>
     {:then list}
+      {#if !list.length}
+        <li>Nothing to show</li>
+      {/if}
       {#each list as item}
         <li>
           <a href="#" on:click|preventDefault="{() => setTime(item.seconds)}">

@@ -6,8 +6,8 @@
   "author": "Let's Code <https://github.com/letscode-io>",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel src/inject/index.js src/inject/inject.css --no-hmr --out-file inject --no-source-maps",
-    "build": "parcel build src/inject/index.js src/inject/inject.css --out-file inject --no-content-hash"
+    "dev": "parcel src/inject/index.js --no-hmr --out-file inject --no-source-maps",
+    "build": "parcel build src/inject/index.js --out-file inject --no-content-hash"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -16,7 +16,12 @@
     "parcel-plugin-svelte": "^4.0.6",
     "svelte": "^3.20.1"
   },
-  "browserlist": [
+  "browserslist": [
     "last 2 Chrome versions"
-  ]
+  ],
+  "svelte": {
+    "compiler": {
+      "css": false
+    }
+  }
 }
