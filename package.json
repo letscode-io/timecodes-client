@@ -23,5 +23,8 @@
     "compiler": {
       "css": false
     }
+  },
+  "babel": {
+    "plugins": ["@babel/plugin-transform-runtime"]
   }
 }
