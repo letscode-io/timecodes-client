@@ -23,7 +23,7 @@
   let items = fetchAnnotations(getYouTubeId());
 
   function handleSubmit(event) {
-    fetch(HOST + "/annotation", {
+    fetch(HOST + "/annotations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
