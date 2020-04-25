@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
   export let visible;
   export let items;
@@ -7,7 +7,21 @@
   let video;
 
   function getTime(seconds) {
-    return `${Math.floor(seconds / 60)}:${seconds % 60}`;
+    let hours = Math.floor(seconds / 3600);
+    let minutes = Math.floor((seconds - hours * 3600) / 60);
+    seconds = seconds - hours * 3600 - minutes * 60;
+
+    if (hours < 10) {
+      hours = "0" + hours;
+    }
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+      seconds = "0" + seconds;
+    }
+    let time = hours + ":" + minutes + ":" + seconds;
+    return time;
   }
 
   function setTime(seconds) {
@@ -17,42 +31,51 @@
   }
 
   onMount(() => {
-    video = document.querySelector('video.video-stream');
+    video = document.querySelector("video.video-stream");
   });
 </script>
 
+<style>
+  .hidden {
+    display: none;
+  }
+
+  .content {
+    padding: 1rem 0 1rem 3px;
+  }
+
+  .list {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    grid-gap: 0.5rem 1rem;
+    font-size: 14px;
+  }
+
+  .timecode a {
+    color: rgb(6, 95, 212);
+  }
+</style>
+
 <div class="content" class:hidden={!visible}>
-  <ul class="list">
+  <div class="list">
     {#await items}
-      <li>Loading...</li>
+      <div>Loading...</div>
     {:then list}
       {#if !list.length}
-        <li>Nothing to show</li>
+        <div>Nothing to show</div>
       {/if}
       {#each list as item}
-        <li>
-          <a href="#" on:click|preventDefault="{() => setTime(item.seconds)}">
+        <div class="description">
+          {item.text}
+        </div>
+        <div class="timecode">
+          <a href="#" on:click|preventDefault={() => setTime(item.seconds)}>
             {getTime(item.seconds)}
-          </a> - {item.text}
-        </li>
+          </a>
+        </div>
       {/each}
     {:catch error}
-      <li>Your princess is in another castle: {error.message}</li>
+      <div>Your princess is in another castle: {error.message}</div>
     {/await}
-  </ul>
+  </div>
 </div>
-
-<style>
-.hidden {
-  display: none;
-}
-
-.content {
-  list-style: none;
-  padding-left: 10px;
-}
-
-.annotation {
-  font-size: 24px;
-}
-</style>

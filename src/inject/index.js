@@ -9,7 +9,7 @@ chrome.extension.sendMessage({}, function () {
         clearInterval(readyStateCheckInterval);
 
         var annotator = document.createElement("div");
-        annotator.id = "youanno";
+        annotator.id = "timecodes";
 
         var primaryInner = document.getElementById("primary-inner");
         var ticketShelf = document.getElementById("ticket-shelf");

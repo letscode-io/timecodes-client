@@ -8,7 +8,7 @@
       </svg>
     </span>
     <span class="youanno-button-text">
-      YouAnno
+      TimeCodes
     </span>
   </a>
 </div>
