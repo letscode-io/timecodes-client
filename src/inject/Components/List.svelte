@@ -66,7 +66,7 @@
       {/if}
       {#each list as item}
         <div class="description">
-          {item.text}
+          {item.description}
         </div>
         <div class="timecode">
           <a href="#" on:click|preventDefault={() => setTime(item.seconds)}>

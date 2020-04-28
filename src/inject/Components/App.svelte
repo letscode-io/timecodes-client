@@ -1,9 +1,10 @@
 <script>
-  import Header from './Header.svelte';
-  import List from './List.svelte';
+  import Header from "./Header.svelte";
+  import List from "./List.svelte";
 
   let visible = false;
-  const HOST = 'https://cab71680.ngrok.io';
+  const HOST = process.env.APP_HOST;
+  const TIMECODES_PATH = "timecodes";
 
   function getYouTubeId() {
     return window.location.href.match(/v\=(.+)$/)[1];
@@ -15,23 +16,26 @@
   }
 
   let fetchAnnotations = async function(id) {
-    const response = await fetch(HOST + '/annotations/' + id);
+    const url = [HOST, TIMECODES_PATH, id].join("/");
+    const response = await fetch(url);
     return response.json();
-  }
+  };
 
   let items = fetchAnnotations(getYouTubeId());
 
   function handleSubmit(event) {
-    fetch(HOST + "/annotations", {
+    const url = [HOST, TIMECODES_PATH].join("/");
+
+    fetch(url, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         ...event.detail,
         videoId: getYouTubeId()
       })
-    }).then((response) => {
+    }).then(response => {
       items = fetchAnnotations(getYouTubeId());
     });
   }
