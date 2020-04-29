@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   let secondsInit = 0;
-  let text = '';
+  let description = '';
 
   $: seconds = getTime(secondsInit);
 
@@ -32,7 +32,7 @@
   function sendForm() {
     dispatch('submitForm', {
       seconds,
-      text
+      description
     });
 
     seconds = '';
@@ -50,7 +50,7 @@
 
 <form class="youanno-form" on:submit|preventDefault={sendForm}>
   <input name="seconds" bind:value={seconds} readonly placeholder="13:37" class="time" />
-  <input name="text" bind:value={text} placeholder="Your comment goes here" />
+  <input name="description" bind:value={description} placeholder="Your comment goes here" />
   <button type="submit" class="youanno-submit">Submit</button>
 </form>
 
