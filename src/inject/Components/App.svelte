@@ -42,7 +42,7 @@
 </script>
 
 <div class="timecodes">
-  <Header on:click={handleClick} />
+  <Header on:click={handleClick} on:submitForm={handleSubmit} />
   <List visible={visible} items={items} />
 </div>
 

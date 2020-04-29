@@ -8,15 +8,15 @@ chrome.extension.sendMessage({}, function () {
       if (ticketShelf) {
         clearInterval(readyStateCheckInterval);
 
-        var annotator = document.createElement("div");
-        annotator.id = "timecodes";
+        var timecodesContainer = document.createElement("div");
+        timecodesContainer.id = "timecodes";
 
         var primaryInner = document.getElementById("primary-inner");
         var ticketShelf = document.getElementById("ticket-shelf");
 
-        primaryInner.insertBefore(annotator, ticketShelf);
+        primaryInner.insertBefore(timecodesContainer, ticketShelf);
 
-        new App({ target: annotator });
+        new App({ target: timecodesContainer });
       }
     }
   }, 10);

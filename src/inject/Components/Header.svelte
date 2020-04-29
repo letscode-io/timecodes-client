@@ -1,4 +1,11 @@
-<div>
+<script>
+  import Form from './Form.svelte';
+  import { fade } from "svelte/transition";
+
+  let showForm = false;
+</script>
+
+<div class="container">
   <a href="#" class="youanno-button" on:click>
     <span class="youanno-icon">
       <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
@@ -11,9 +18,38 @@
       TimeCodes
     </span>
   </a>
+  <div class="add">
+    <div class="form">
+      {#if showForm}
+        <div transition:fade>
+          <Form on:submitForm />
+        </div>
+      {/if}
+    </div>
+    <button on:click={() => showForm = !showForm}>
+      {#if showForm}
+        &gt;
+      {:else}
+        +
+      {/if}
+    </button>
+  </div>
 </div>
 
 <style>
+.container, .add {
+  display: flex;
+}
+
+.add {
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.form {
+  margin-right: 20px;
+}
+
 .youanno-button {
   display: inline-block;
   text-decoration: none;

@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
 
   export let visible;
   export let items;
@@ -56,26 +57,28 @@
   }
 </style>
 
-<div class="content" class:hidden={!visible}>
-  <div class="list">
-    {#await items}
-      <div>Loading...</div>
-    {:then list}
-      {#if !list.length}
-        <div>Nothing to show</div>
-      {/if}
-      {#each list as item}
-        <div class="description">
-          {item.description}
-        </div>
-        <div class="timecode">
-          <a href="#" on:click|preventDefault={() => setTime(item.seconds)}>
-            {getTime(item.seconds)}
-          </a>
-        </div>
-      {/each}
-    {:catch error}
-      <div>Your princess is in another castle: {error.message}</div>
-    {/await}
+{#if visible}
+  <div class="content" transition:fade>
+    <div class="list">
+      {#await items}
+        <div>Loading...</div>
+      {:then list}
+        {#if !list.length}
+          <div>Nothing to show</div>
+        {/if}
+        {#each list as item}
+          <div class="description">
+            {item.description}
+          </div>
+          <div class="timecode">
+            <a href="#" on:click|preventDefault={() => setTime(item.seconds)}>
+              {getTime(item.seconds)}
+            </a>
+          </div>
+        {/each}
+      {:catch error}
+        <div>Your princess is in another castle: {error.message}</div>
+      {/await}
+    </div>
   </div>
-</div>
+{/if}
