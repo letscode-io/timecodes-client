@@ -1,6 +1,7 @@
 <script>
   import Header from "./Header.svelte";
   import List from "./List.svelte";
+  import { fetch } from "../helpers/fetch";
 
   let visible = false;
   const HOST = process.env.APP_HOST;
@@ -17,8 +18,7 @@
 
   let fetchAnnotations = async function(id) {
     const url = [HOST, TIMECODES_PATH, id].join("/");
-    const response = await fetch(url);
-    return response.json();
+    return await fetch.get(url);
   };
 
   let items = fetchAnnotations(getYouTubeId());
@@ -26,15 +26,9 @@
   function handleSubmit(event) {
     const url = [HOST, TIMECODES_PATH].join("/");
 
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        ...event.detail,
-        videoId: getYouTubeId()
-      })
+    fetch.post(url, {
+      ...event.detail,
+      videoId: getYouTubeId()
     }).then(response => {
       items = fetchAnnotations(getYouTubeId());
     });
