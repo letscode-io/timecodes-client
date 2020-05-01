@@ -2,7 +2,8 @@ const { fetch } = require('./fetch');
 
 function mockResponseWith(fakeResponse) {
   return jest.fn(() => Promise.resolve({
-    json: () => Promise.resolve(response)
+    ok: true,
+    json: () => Promise.resolve(fakeResponse)
   }))
 }
 
@@ -16,7 +17,7 @@ test('fetch has post method', () => {
 
 describe('URL', () => {
   beforeEach(() => {
-    mockResponseWith({ success: true });
+    window.fetch = mockResponseWith({ success: true });
   });
 
   test('starts with HOST', async () => {
@@ -36,7 +37,7 @@ describe('URL', () => {
   });
 });
 
-test.skip('reject window.fetch')
-test.skip('if returns status not in 200-299 reject')
-test.skip('POST should stringify data')
-test.skip('GET ignore data param')
+test.todo('reject window.fetch')
+test.todo('if returns status not in 200-299 reject')
+test.todo('POST should stringify data')
+test.todo('GET ignore data param')
