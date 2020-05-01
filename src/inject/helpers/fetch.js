@@ -4,7 +4,7 @@ function fetchWith(method) {
   return async function(path, data = null) {
     let url = path.startsWith('/') ? HOST + path : path;
     if (method === 'GET' && data) {
-      url += '?' + Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k])).join('&')
+      url += '?' + Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k])).join('&')
     }
 
     let options = {
