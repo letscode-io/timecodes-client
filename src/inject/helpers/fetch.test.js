@@ -1,8 +1,8 @@
 const { fetch } = require('./fetch');
 
-function mockResponseWith(fakeResponse) {
+function mockResponseWith(fakeResponse, ok = true) {
   return jest.fn(() => Promise.resolve({
-    ok: true,
+    ok,
     json: () => Promise.resolve(fakeResponse)
   }))
 }
@@ -35,9 +35,48 @@ describe('URL', () => {
 
     expect(url).toBe('https://site.com/timecodes')
   });
+
+  test('appears query params', async () => {
+    await fetch.get('/timecodes', { query: 'param' });
+    const { calls } = window.fetch.mock;
+    const [ url ] = calls[calls.length - 1];
+
+    expect(url).toBe('https://example.com/timecodes?query=param')
+  });
 });
 
-test.todo('reject window.fetch')
-test.todo('if returns status not in 200-299 reject')
-test.todo('POST should stringify data')
-test.todo('GET ignore data param')
+describe('request', () => {
+  beforeEach(() => {
+    window.fetch = mockResponseWith({ success: true });
+  });
+
+  test('POST should stringify body', async () => {
+    await fetch.post('/timecodes', { query: 'param' });
+    const { calls } = window.fetch.mock;
+    const [ , options ] = calls[calls.length - 1];
+
+    expect(options.body).toBe('{"query":"param"}');
+  });
+
+  test('has Content-Type header', async () => {
+    await fetch.post('/timecodes', { query: 'param' });
+    const { calls } = window.fetch.mock;
+    const [ , options ] = calls[calls.length - 1];
+
+    expect(options.header).toHaveProperty('Content-Type', 'application/json');
+  });
+});
+
+describe('response', () => {
+  beforeEach(() => {
+    window.fetch = mockResponseWith({ any: 'body' }, false);
+  });
+
+  test('throw an error with response if status no in 200-299', async () => {
+    try {
+      await fetch.post('/timecodes', { query: 'param' });
+    } catch (error) {
+      expect(error.ok).toBe(false);
+    }
+  });
+});

@@ -1,34 +1,32 @@
+import { queryParamsFromObject } from './queryParamsFromObject';
+
 const HOST = process.env.APP_HOST;
 
 function fetchWith(method) {
-  return async function(path, data = null) {
+  return async function(path, data) {
     let url = path.startsWith('/') ? HOST + path : path;
+
     if (method === 'GET' && data) {
-      url += '?' + Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k])).join('&')
+      url += '?' + queryParamsFromObject(data);
     }
 
-    let options = {
+    const response = await window.fetch(url, {
       method,
       header: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
-    }
-
-    if (method !== 'GET' && method !== 'HEAD') {
-      options.body = JSON.stringify(data);
-    }
-
-    const response = await window.fetch(url, options);
+      body: JSON.stringify(data),
+    });
 
     if (response.ok) {
       return response.json();
     }
 
-    throw new Error(response)
+    throw response;
   }
 }
 
 export const fetch = {
   get: fetchWith('GET'),
-  post: fetchWith('POST')
+  post: fetchWith('POST'),
 }
