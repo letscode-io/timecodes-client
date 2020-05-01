@@ -16,12 +16,12 @@
     visible = !visible;
   }
 
-  let fetchAnnotations = async function(id) {
+  let fetchTimeCodes = async function(id) {
     const url = [HOST, TIMECODES_PATH, id].join("/");
     return await fetch.get(url);
   };
 
-  let items = fetchAnnotations(getYouTubeId());
+  let items = fetchTimeCodes(getYouTubeId());
 
   function handleSubmit(event) {
     const url = [HOST, TIMECODES_PATH].join("/");
@@ -30,7 +30,7 @@
       ...event.detail,
       videoId: getYouTubeId()
     }).then(response => {
-      items = fetchAnnotations(getYouTubeId());
+      items = fetchTimeCodes(getYouTubeId());
     });
   }
 </script>
