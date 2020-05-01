@@ -1,33 +1,16 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { onMount } from "svelte";
+  import { onMount } from 'svelte';
+  import { humanizeTime } from '../helpers/humanizeTime';
 
   let secondsInit = 0;
   let description = '';
 
-  $: seconds = getTime(secondsInit);
+  $: seconds = humanizeTime(secondsInit);
 
   let video;
 
   const dispatch = createEventDispatcher();
-
-  function getTime(seconds) {
-    let hours = Math.floor(seconds / 3600);
-    let minutes = Math.floor((seconds - hours * 3600) / 60);
-    seconds = seconds - hours * 3600 - minutes * 60;
-
-    if (hours < 10) {
-      hours = "0" + hours;
-    }
-    if (minutes < 10) {
-      minutes = "0" + minutes;
-    }
-    if (seconds < 10) {
-      seconds = "0" + seconds;
-    }
-    let time = hours + ":" + minutes + ":" + seconds;
-    return time;
-  }
 
   function sendForm() {
     dispatch('submitForm', {
