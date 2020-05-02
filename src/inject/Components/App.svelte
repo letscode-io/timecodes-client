@@ -2,14 +2,11 @@
   import Header from "./Header.svelte";
   import List from "./List.svelte";
   import { fetch } from "../helpers/fetch";
+  import { videoId } from '../stores';
 
   let visible = false;
   const HOST = process.env.APP_HOST;
   const TIMECODES_PATH = "timecodes";
-
-  function getYouTubeId() {
-    return window.location.href.match(/v\=(.+)$/)[1];
-  }
 
   function handleClick(e) {
     e.preventDefault();
@@ -21,16 +18,16 @@
     return await fetch.get(url);
   };
 
-  let items = fetchTimeCodes(getYouTubeId());
+  $: items = fetchTimeCodes($videoId);
 
   function handleSubmit(event) {
     const url = [HOST, TIMECODES_PATH].join("/");
 
     fetch.post(url, {
       ...event.detail,
-      videoId: getYouTubeId()
+      videoId: $videoId
     }).then(response => {
-      items = fetchTimeCodes(getYouTubeId());
+      items = fetchTimeCodes($videoId);
     });
   }
 </script>

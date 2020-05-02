@@ -1,22 +1,14 @@
 <script>
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import { humanizeTime } from '../helpers/humanizeTime';
+  import { video } from '../stores';
 
   export let visible;
   export let items;
 
-  let video;
-
   function setTime(seconds) {
-    if (video) {
-      video.currentTime = seconds;
-    }
+    $video.currentTime = seconds;
   }
-
-  onMount(() => {
-    video = document.querySelector("video.video-stream");
-  });
 </script>
 
 <style>

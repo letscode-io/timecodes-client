@@ -2,13 +2,12 @@
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
   import { humanizeTime } from '../helpers/humanizeTime';
+  import { video } from '../stores';
 
   let secondsInit = 0;
   let description = '';
 
   $: seconds = humanizeTime(secondsInit);
-
-  let video;
 
   const dispatch = createEventDispatcher();
 
@@ -23,11 +22,10 @@
   }
 
   onMount(() => {
-    video = document.querySelector("video.video-stream");
-    secondsInit = Math.ceil(video.currentTime);
-    video.addEventListener('timeupdate', function(e) {
-      secondsInit = Math.ceil(e.target.currentTime);
-    })
+    secondsInit = Math.floor($video.currentTime);
+    $video.addEventListener('timeupdate', function(e) {
+      secondsInit = Math.floor(e.target.currentTime);
+    });
   });
 </script>
 
