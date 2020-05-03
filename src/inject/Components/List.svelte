@@ -6,8 +6,12 @@
   export let visible;
   export let items;
 
+  let videoElement;
+
+  video.subscribe(newVideo => videoElement = newVideo);
+
   function setTime(seconds) {
-    $video.currentTime = seconds;
+    videoElement.currentTime = seconds;
   }
 </script>
 

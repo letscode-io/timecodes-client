@@ -5,8 +5,6 @@
   import { videoId } from '../stores';
 
   let visible = false;
-  const HOST = process.env.APP_HOST;
-  const TIMECODES_PATH = "timecodes";
 
   function handleClick(e) {
     e.preventDefault();
@@ -14,16 +12,13 @@
   }
 
   let fetchTimeCodes = async function(id) {
-    const url = [HOST, TIMECODES_PATH, id].join("/");
-    return await fetch.get(url);
+    return await fetch.get(`/timecodes/${id}`);
   };
 
   $: items = fetchTimeCodes($videoId);
 
   function handleSubmit(event) {
-    const url = [HOST, TIMECODES_PATH].join("/");
-
-    fetch.post(url, {
+    fetch.post('/timecodes', {
       ...event.detail,
       videoId: $videoId
     }).then(response => {
