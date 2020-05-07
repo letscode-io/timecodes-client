@@ -66,8 +66,8 @@
     {#await getAuthTokenPromise}
       <p>logging...</p>
     {:then token}
-      <button on:click={handleLogin} id="auth">Login</button>
+      <button on:click|preventDefault={handleLogin} id="auth">Login</button>
     {/await}
   {/if}
-  <button on:click={revokeToken} id="auth">Revoke</button>
+  <button on:click|preventDefault={handleRevoke} id="auth">Revoke</button>
 </div>
