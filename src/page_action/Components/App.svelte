@@ -8,12 +8,10 @@
   let getAuthTokenPromise;
 
   function handleLogin(e) {
-    e.preventDefault();
     getAuthTokenPromise = getAuthToken();
   }
 
   function handleRevoke(e) {
-    e.preventDefault();
     revokeToken();
   }
 
