@@ -48,6 +48,8 @@
 
   onMount(() => {
     chrome.storage.local.get([ACCESS_TOKEN_KEY], function(result) {
+      accessToken = result.accessToken;
+
       if (result.accessToken) {
         getAuthTokenPromise = getAuthToken();
       }
