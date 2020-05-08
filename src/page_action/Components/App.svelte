@@ -11,11 +11,7 @@
     getAuthTokenPromise = getAuthToken();
   }
 
-  function handleRevoke(e) {
-    revokeToken();
-  }
-
-  const revokeToken = async function revokeToken() {
+  const handleRevoke = async function revokeToken() {
     await fetch(`${GOOGLE_REVOKE_TOKEN_URL}?token=${accessToken}`);
     await removeCachedAuthToken();
     await removeAccessTokenFromStorage();
