@@ -18,7 +18,7 @@
     });
 
     seconds = '';
-    text = '';
+    description = '';
   }
 
   onMount(() => {
