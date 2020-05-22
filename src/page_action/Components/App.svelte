@@ -1,10 +1,11 @@
 <script>
   import { onMount } from "svelte";
 
-  const ACCESS_TOKEN_KEY = "accessToken";
+  const LOGGED_IN_KEY = "loggedIn";
   const GOOGLE_REVOKE_TOKEN_URL = "https://accounts.google.com/o/oauth2/revoke";
 
   let accessToken = "";
+  let loggedIn = false;
   let getAuthTokenPromise;
 
   function handleLogin(e) {
@@ -20,50 +21,64 @@
   function removeCachedAuthToken() {
     return new Promise(function(resolve) {
       chrome.identity.removeCachedAuthToken({ token: accessToken }, function() {
-        accessToken = "";
-        resolve(true);
+        loggedIn = false;
+
+        resolve(false);
       });
     });
   }
 
   function removeAccessTokenFromStorage(params) {
     return new Promise(function(resolve) {
-      chrome.storage.local.remove([ACCESS_TOKEN_KEY], function() {
-        console.log("accessToken removed from storage");
-        resolve(true);
+      chrome.storage.local.remove([LOGGED_IN_KEY], function() {
+        console.log("User has been logged out.");
+
+        resolve(false);
       });
     });
   }
 
   function getAuthToken() {
     return new Promise(function(resolve) {
-      chrome.identity.getAuthToken({ interactive: true }, function(token) {
-        chrome.storage.local.set({ [ACCESS_TOKEN_KEY]: token }, function() {
-          accessToken = token;
-          resolve(accessToken);
+      chrome.identity.getAuthToken({ interactive: !loggedIn }, function(token) {
+        accessToken = token;
+
+        chrome.storage.local.set({ [LOGGED_IN_KEY]: true }, function() {
+          loggedIn = true;
+
+          resolve(true);
         });
       });
     });
   }
 
   onMount(() => {
-    chrome.storage.local.get([ACCESS_TOKEN_KEY], function(result) {
-      accessToken = result.accessToken;
+    chrome.storage.local.get([LOGGED_IN_KEY], function(result) {
+      loggedIn = result.loggedIn;
 
-      if (result.accessToken) {
+      if (loggedIn) {
         getAuthTokenPromise = getAuthToken();
       }
     });
   });
 </script>
 
-<div>
-  {#if !accessToken}
+<style>
+  .popup {
+    height: 100px;
+    width: 100px;
+  }
+</style>
+
+<div class="popup">
+  {#if loggedIn}
+    <p>You're logged in.</p>
+    <button on:click|preventDefault={handleRevoke} id="auth">Log out</button>
+  {:else}
     {#await getAuthTokenPromise}
       <p>logging...</p>
-    {:then token}
+    {:then result}
       <button on:click|preventDefault={handleLogin} id="auth">Login</button>
     {/await}
   {/if}
-  <button on:click|preventDefault={handleRevoke} id="auth">Revoke</button>
 </div>
