@@ -4,7 +4,7 @@
 
   let showForm = false;
 
-  export let hasAccessToken;
+  export let isLoggedIn;
 </script>
 
 <div class="container">
@@ -20,7 +20,7 @@
       TimeCodes
     </span>
   </a>
-  {#if hasAccessToken}
+  {#if isLoggedIn}
     <div class="add">
       <div class="form">
         {#if showForm}

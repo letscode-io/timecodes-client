@@ -8,9 +8,12 @@ chrome.extension.onMessage.addListener(function (
   switch (request.messageType) {
     case "accessTokenRequest":
       chrome.identity.getAuthToken({ interactive: false }, function (token) {
-        chrome.storage.local.set({ ["loggedIn"]: true }, function () {
-          console.log("User has logged in.");
+        const loggedIn = !!token;
+
+        chrome.storage.local.set({ ["loggedIn"]: loggedIn }, function () {
+          console.log("loggedIn", loggedIn);
         });
+
         sendResponse({ accessToken: token });
       });
 

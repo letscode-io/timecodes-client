@@ -15,7 +15,7 @@
   const handleRevoke = async function revokeToken() {
     await fetch(`${GOOGLE_REVOKE_TOKEN_URL}?token=${accessToken}`);
     await removeCachedAuthToken();
-    await removeAccessTokenFromStorage();
+    await unserLoggedIn();
   };
 
   function removeCachedAuthToken() {
@@ -28,7 +28,7 @@
     });
   }
 
-  function removeAccessTokenFromStorage(params) {
+  function unserLoggedIn() {
     return new Promise(function(resolve) {
       chrome.storage.local.remove([LOGGED_IN_KEY], function() {
         console.log("User has been logged out.");
@@ -41,12 +41,13 @@
   function getAuthToken() {
     return new Promise(function(resolve) {
       chrome.identity.getAuthToken({ interactive: !loggedIn }, function(token) {
+        const newLoggedIn = !!token;
         accessToken = token;
 
-        chrome.storage.local.set({ [LOGGED_IN_KEY]: true }, function() {
-          loggedIn = true;
+        chrome.storage.local.set({ [LOGGED_IN_KEY]: newLoggedIn }, function() {
+          loggedIn = newLoggedIn;
 
-          resolve(true);
+          resolve(newLoggedIn);
         });
       });
     });
@@ -54,8 +55,9 @@
 
   onMount(() => {
     chrome.storage.local.get([LOGGED_IN_KEY], function(result) {
-      loggedIn = result.loggedIn;
+      loggedIn = result.loggedIn || loggedIn;
 
+      // Run non-interactive login for previosly logged in user
       if (loggedIn) {
         getAuthTokenPromise = getAuthToken();
       }

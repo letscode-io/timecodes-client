@@ -3,10 +3,9 @@
   import Header from "./Header.svelte";
   import List from "./List.svelte";
   import { fetch } from "../helpers/fetch";
-  import { videoId } from "../stores";
+  import { accessToken, isLoggedIn, videoId } from "../stores";
 
   let visible = false;
-  let accessToken = "";
 
   function handleClick(e) {
     e.preventDefault();
@@ -18,18 +17,13 @@
   };
 
   $: items = fetchTimeCodes($videoId);
-  $: chrome.runtime.sendMessage({ messageType: "accessTokenRequest" }, function(
-    response
-  ) {
-    accessToken = response.accessToken;
-  });
 
   function handleSubmit(event) {
     fetch
       .post(
         "/auth/timecodes",
         { videoId: $videoId, ...event.detail },
-        { accessToken: accessToken }
+        { accessToken: $accessToken }
       )
       .then(response => {
         items = fetchTimeCodes($videoId);
@@ -52,6 +46,6 @@
   <Header
     on:click={handleClick}
     on:submitForm={handleSubmit}
-    hasAccessToken={!!accessToken} />
+    isLoggedIn={$isLoggedIn} />
   <List {visible} {items} />
 </div>

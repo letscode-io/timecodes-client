@@ -22,3 +22,36 @@ export const videoId = readable(getVideoId(), function (set) {
 function getVideoId() {
   return window.location.href.match(/v\=(.+)$/)[1];
 }
+
+export const isLoggedIn = readable(null, function start(set) {
+  chrome.storage.local.get(["loggedIn"], function (result) {
+    set(result.loggedIn);
+  });
+
+  chrome.storage.onChanged.addListener(function (changes) {
+    for (const key in changes) {
+      if (key == "loggedIn") {
+        set(changes.loggedIn.newValue);
+      }
+    }
+  });
+});
+
+export const accessToken = readable(null, function start(set) {
+  const sendMessage = () =>
+    chrome.runtime.sendMessage({ messageType: "accessTokenRequest" }, function (
+      response
+    ) {
+      set(response.accessToken);
+    });
+
+  sendMessage();
+
+  chrome.storage.onChanged.addListener(function (changes) {
+    for (const key in changes) {
+      if (key == "loggedIn") {
+        sendMessage();
+      }
+    }
+  });
+});
