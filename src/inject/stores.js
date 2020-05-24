@@ -28,13 +28,19 @@ export const isLoggedIn = readable(null, function start(set) {
     set(result.loggedIn);
   });
 
-  chrome.storage.onChanged.addListener(function (changes) {
+  const onChange = (changes) => {
     for (const key in changes) {
       if (key == "loggedIn") {
         set(changes.loggedIn.newValue);
       }
     }
-  });
+  };
+
+  chrome.storage.onChanged.addListener(onChange);
+
+  return function stop() {
+    chrome.storage.onChanged.removeListener(onChange);
+  };
 });
 
 export const accessToken = readable(null, function start(set) {
@@ -47,11 +53,17 @@ export const accessToken = readable(null, function start(set) {
 
   sendMessage();
 
-  chrome.storage.onChanged.addListener(function (changes) {
+  const onChange = (changes) => {
     for (const key in changes) {
       if (key == "loggedIn") {
         sendMessage();
       }
     }
-  });
+  };
+
+  chrome.storage.onChanged.addListener(onChange);
+
+  return function stop() {
+    chrome.storage.onChanged.removeListener(onChange);
+  };
 });
