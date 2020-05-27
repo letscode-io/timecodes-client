@@ -3,37 +3,43 @@
   import { fade } from "svelte/transition";
 
   let showForm = false;
+
+  export let isLoggedIn;
 </script>
 
 <div class="container">
-  <a href="#" class="youanno-button" on:click>
-    <span class="youanno-icon">
+  <a href="#" class="timecodes-button" on:click>
+    <span class="timecodes-icon">
       <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false">
         <g class="style-scope yt-icon">
           <path d="M3.67 8.67h14V11h-14V8.67zm0-4.67h14v2.33h-14V4zm0 9.33H13v2.34H3.67v-2.34zm11.66 0v7l5.84-3.5-5.84-3.5z"></path>
         </g>
       </svg>
     </span>
-    <span class="youanno-button-text">
+    <span class="timecodes-button-text">
       TimeCodes
     </span>
   </a>
-  <div class="add">
-    <div class="form">
-      {#if showForm}
-        <div transition:fade>
-          <Form on:submitForm />
-        </div>
-      {/if}
+  {#if isLoggedIn}
+    <div class="add">
+      <div class="form">
+        {#if showForm}
+          <div transition:fade>
+            <Form on:submitForm />
+          </div>
+        {/if}
+      </div>
+      <button on:click={() => showForm = !showForm}>
+        {#if showForm}
+          &gt;
+        {:else}
+          +
+        {/if}
+      </button>
     </div>
-    <button on:click={() => showForm = !showForm}>
-      {#if showForm}
-        &gt;
-      {:else}
-        +
-      {/if}
-    </button>
-  </div>
+  {:else}
+    Login to leave your own timecode.
+  {/if}
 </div>
 
 <style>
@@ -50,19 +56,19 @@
   margin-right: 20px;
 }
 
-.youanno-button {
+.timecodes-button {
   display: inline-block;
   text-decoration: none;
 }
 
-.youanno-icon {
+.timecodes-icon {
   display: inline-block;
   width: 24px;
   height: 24px;
   vertical-align: middle;
 }
 
-.youanno-button-text {
+.timecodes-button-text {
   color:rgb(96, 96, 96);
   cursor:pointer;
   display:inline-block;
