@@ -67,20 +67,34 @@
 
 <style>
   .popup {
-    height: 100px;
-    width: 100px;
+    min-width: 8rem;
+    min-height: 5rem;
   }
 </style>
 
-<div class="popup">
+<div class="popup flex justify-center bg-gray-200">
   {#if loggedIn}
-    <p>You're logged in.</p>
-    <button on:click|preventDefault={handleRevoke} id="auth">Log out</button>
+    <div class="mb-1">
+      <p class="text-center text-base mb-1">You're logged in.</p>
+      <button
+        on:click|preventDefault={handleRevoke}
+        class="default-button">
+        Log out
+      </button>
+    </div>
   {:else}
     {#await getAuthTokenPromise}
-      <p>logging...</p>
+      <div>
+        <p class="text-center text-base">Logging in</p>
+      </div>
     {:then result}
-      <button on:click|preventDefault={handleLogin} id="auth">Login</button>
+      <div>
+        <button
+          on:click|preventDefault={handleLogin}
+          class="default-button ">
+          Login
+        </button>
+      </div>
     {/await}
   {/if}
 </div>
