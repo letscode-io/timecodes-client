@@ -42,7 +42,7 @@
   }
 </style>
 
-<div class="timecodes">
+<div class="timecodes text-xl">
   <Header
     on:click={handleClick}
     on:submitForm={handleSubmit}
