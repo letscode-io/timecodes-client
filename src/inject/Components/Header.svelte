@@ -2,6 +2,8 @@
   import Form from "./Form.svelte";
   import { fade } from "svelte/transition";
 
+  const editIcon = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"/></svg>`;
+
   let showForm = false;
 
   export let isLoggedIn;
@@ -62,11 +64,33 @@
 
       <div>
         <button
-          class="bg-transparent hover:bg-red-500 text-red-700
-          hover:text-white py-2 px-4 border border-red-500
-          hover:border-transparent rounded"
+          class="bg-transparent hover:bg-red-500 text-red-700 hover:text-white
+          py-2 px-4 border border-red-500 hover:border-transparent rounded"
           on:click={() => (showForm = !showForm)}>
-          {#if showForm}Hide{:else}Add timecode{/if}
+          {#if showForm}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18"
+              viewBox="0 0 24 24"
+              width="18">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                d="M10.02 6L8.61 7.41 13.19 12l-4.58 4.59L10.02 18l6-6-6-6z" />
+            </svg>
+          {:else}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18"
+              viewBox="0 0 24 24"
+              width="18">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25
+                0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02
+                0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3
+                17.25V21h3.75L17.81 9.94l-3.75-3.75z" />
+            </svg>
+          {/if}
         </button>
       </div>
     </div>

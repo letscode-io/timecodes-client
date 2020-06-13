@@ -6,10 +6,10 @@
   "author": "Let's Code <https://github.com/letscode-io>",
   "license": "MIT",
   "scripts": {
-    "build:inject": "parcel build src/inject/index.js --out-file inject --no-content-hash",
+    "build:inject": "parcel build src/inject/index.js --out-file inject --no-content-hash --public-url '.'",
     "build:popup": "parcel build src/page_action/page_action.html --out-file page_action.html --no-content-hash --public-url '.'",
     "build": "yarn build:popup & yarn build:inject",
-    "dev:inject": "parcel src/inject/index.js --no-hmr --out-file inject --no-source-maps",
+    "dev:inject": "parcel src/inject/index.js --no-hmr --out-file inject --no-source-maps --public-url '.'",
     "dev:popup": "parcel src/page_action/page_action.html --no-hmr --out-file page_action.html --no-source-maps --public-url '.'",
     "dev": "yarn dev:popup & yarn dev:inject",
     "lint-fix": "prettier --write src/",
