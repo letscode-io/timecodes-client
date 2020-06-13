@@ -1,16 +1,18 @@
-const { queryParamsFromObject } = require('./queryParamsFromObject');
+const { queryParamsFromObject } = require("./queryParamsFromObject");
 
-test('returns empty string', () => {
-  expect(queryParamsFromObject({})).toBe('');
+test("returns empty string", () => {
+  expect(queryParamsFromObject({})).toBe("");
 });
 
-test('returns query params string', () => {
+test("returns query params string", () => {
   const params = {
-    q: 'search',
+    q: "search",
     num: 5,
     bool: false,
     undefined: undefined,
-    null: null
+    null: null,
   };
-  expect(queryParamsFromObject(params)).toBe('q=search&num=5&bool=false&undefined=undefined&null=null');
+  expect(queryParamsFromObject(params)).toBe(
+    "q=search&num=5&bool=false&undefined=undefined&null=null"
+  );
 });
