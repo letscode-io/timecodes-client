@@ -6,14 +6,16 @@
   "author": "Let's Code <https://github.com/letscode-io>",
   "license": "MIT",
   "scripts": {
-    "dev:popup": "parcel src/page_action/page_action.html --no-hmr --out-file page_action.html --no-source-maps --public-url '.'",
-    "dev:inject": "parcel src/inject/index.js --no-hmr --out-file inject --no-source-maps",
-    "dev": "yarn dev:popup & yarn dev:inject",
-    "build:popup": "parcel build src/page_action/page_action.html --out-file page_action.html --no-content-hash --public-url '.'",
     "build:inject": "parcel build src/inject/index.js --out-file inject --no-content-hash",
+    "build:popup": "parcel build src/page_action/page_action.html --out-file page_action.html --no-content-hash --public-url '.'",
     "build": "yarn build:popup & yarn build:inject",
-    "test": "jest src",
-    "test:watch": "yarn test --watch"
+    "dev:inject": "parcel src/inject/index.js --no-hmr --out-file inject --no-source-maps",
+    "dev:popup": "parcel src/page_action/page_action.html --no-hmr --out-file page_action.html --no-source-maps --public-url '.'",
+    "dev": "yarn dev:popup & yarn dev:inject",
+    "lint-fix": "prettier --write src/",
+    "lint": "prettier --check src/",
+    "test:watch": "yarn test --watch",
+    "test": "jest src"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
@@ -27,6 +29,7 @@
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
     "postcss-modules": "^2.0.0",
+    "prettier": "2.0.5",
     "svelte": "^3.23.0",
     "svelte-jester": "^1.0.6",
     "tailwindcss": "^1.4.6"

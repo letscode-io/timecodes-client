@@ -1,5 +1,5 @@
-export const queryParamsFromObject = function(obj) {
+export const queryParamsFromObject = function (obj) {
   return Object.keys(obj)
-    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
-    .join('&');
-}
+    .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]))
+    .join("&");
+};
