@@ -41,13 +41,12 @@
   function getAuthToken() {
     return new Promise(function(resolve) {
       chrome.identity.getAuthToken({ interactive: !loggedIn }, function(token) {
-        const newLoggedIn = !!token;
+        loggedIn = !!token;
+
         accessToken = token;
 
-        chrome.storage.local.set({ [LOGGED_IN_KEY]: newLoggedIn }, function() {
-          loggedIn = newLoggedIn;
-
-          resolve(newLoggedIn);
+        chrome.storage.local.set({ [LOGGED_IN_KEY]: loggedIn }, function() {
+          resolve(loggedIn);
         });
       });
     });
@@ -67,34 +66,38 @@
 
 <style>
   .popup {
-    min-width: 8rem;
-    min-height: 5rem;
+    min-width: 12rem;
+    min-height: 7rem;
   }
 </style>
 
-<div class="popup flex justify-center bg-gray-200">
-  {#if loggedIn}
-    <div class="mb-1">
-      <p class="text-center text-base mb-1">You're logged in.</p>
-      <button
-        on:click|preventDefault={handleRevoke}
-        class="default-button">
-        Log out
-      </button>
+<div class="popup bg-gray-200">
+  <div class="flex h-screen">
+    <div class="m-auto">
+      {#if loggedIn}
+        <div>
+          <p class="text-center text-base mb-2">You're logged in.</p>
+          <div class="flex justify-center">
+            <button
+              on:click|preventDefault={handleRevoke}
+              class="default-button">
+              Log out
+            </button>
+          </div>
+        </div>
+      {:else}
+        {#await getAuthTokenPromise}
+          <p class="text-center text-base">Logging in...</p>
+        {:then result}
+          <div class="flex justify-center">
+            <button
+              on:click|preventDefault={handleLogin}
+              class="default-button ">
+              Login
+            </button>
+          </div>
+        {/await}
+      {/if}
     </div>
-  {:else}
-    {#await getAuthTokenPromise}
-      <div>
-        <p class="text-center text-base">Logging in</p>
-      </div>
-    {:then result}
-      <div>
-        <button
-          on:click|preventDefault={handleLogin}
-          class="default-button ">
-          Login
-        </button>
-      </div>
-    {/await}
-  {/if}
+  </div>
 </div>
