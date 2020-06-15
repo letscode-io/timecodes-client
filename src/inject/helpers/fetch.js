@@ -10,14 +10,19 @@ function fetchWith(method) {
       url += "?" + queryParamsFromObject(data);
     }
 
-    const response = await window.fetch(url, {
+    const requestParams = {
       method,
       headers: {
         "Content-Type": "application/json",
         ...getAuthHeader(options.accessToken),
       },
-      body: JSON.stringify(data),
-    });
+    };
+
+    if (["POST", "PUT", "DELETE"].includes(method)) {
+      requestParams.body = JSON.stringify(data);
+    }
+
+    const response = await window.fetch(url, requestParams);
 
     if (response.ok) {
       return response.json();
@@ -38,4 +43,5 @@ function getAuthHeader(accessToken) {
 export const fetch = {
   get: fetchWith("GET"),
   post: fetchWith("POST"),
+  delete: fetchWith("DELETE"),
 };

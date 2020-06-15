@@ -41,6 +41,14 @@
   function getAuthToken() {
     return new Promise(function(resolve) {
       chrome.identity.getAuthToken({ interactive: !loggedIn }, function(token) {
+        if (chrome.runtime.lastError) {
+          console.log(chrome.runtime.lastError.message);
+
+          loggedIn = false;
+          resolve(loggedIn);
+          return;
+        }
+
         loggedIn = !!token;
 
         accessToken = token;

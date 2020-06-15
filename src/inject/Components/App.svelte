@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from "svelte";
   import Header from "./Header.svelte";
   import List from "./List.svelte";
   import { fetch } from "../helpers/fetch";
@@ -12,8 +11,20 @@
     visible = !visible;
   }
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   let fetchTimeCodes = async function(id) {
-    return await fetch.get(`/timecodes/${id}`);
+    if ($isLoggedIn === null) {
+      await sleep(20);
+    }
+
+    const path =
+      $isLoggedIn === true ? `/auth/timecodes/${id}` : `/timecodes/${id}`;
+    const options = $isLoggedIn === true ? { accessToken: $accessToken } : {};
+
+    return await fetch.get(path, undefined, options);
   };
 
   $: items = fetchTimeCodes($videoId);
@@ -42,10 +53,11 @@
   }
 </style>
 
-<div class="timecodes text-xl">
+<div class="timecodes text-2xl">
+
   <Header
     on:click={handleClick}
     on:submitForm={handleSubmit}
     isLoggedIn={$isLoggedIn} />
-  <List {visible} {items} />
+  <List {visible} {items} isLoggedIn={$isLoggedIn} />
 </div>

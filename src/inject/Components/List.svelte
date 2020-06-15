@@ -1,40 +1,21 @@
 <script>
-  import { fade } from 'svelte/transition';
-  import { humanizeTime } from '../helpers/humanizeTime';
-  import { video } from '../stores';
+  import Item from "./Item.svelte";
+  import { fade } from "svelte/transition";
 
-  export let visible;
+  export let isLoggedIn;
   export let items;
-
-  let videoElement;
-
-  video.subscribe(newVideo => videoElement = newVideo);
-
-  function setTime(seconds) {
-    videoElement.currentTime = seconds;
-  }
+  export let visible;
 </script>
 
 <style>
   .content {
     padding: 1rem 0 1rem 3px;
   }
-
-  .list {
-    display: inline-grid;
-    grid-template-columns: auto auto;
-    grid-gap: 0.5rem 1rem;
-    font-size: 14px;
-  }
-
-  .timecode a {
-    color: rgb(6, 95, 212);
-  }
 </style>
 
 {#if visible}
   <div class="content" transition:fade>
-    <div class="list">
+    <div class="grid grid-cols-4 gap-4">
       {#await items}
         <div>Loading...</div>
       {:then list}
@@ -42,14 +23,7 @@
           <div>Nothing to show</div>
         {/if}
         {#each list as item}
-          <div class="description">
-            {item.description}
-          </div>
-          <div class="timecode">
-            <a href="#" on:click|preventDefault={() => setTime(item.seconds)}>
-              {humanizeTime(item.seconds)}
-            </a>
-          </div>
+          <Item {item} {isLoggedIn} />
         {/each}
       {:catch error}
         <div>Your princess is in another castle: {error.message}</div>
