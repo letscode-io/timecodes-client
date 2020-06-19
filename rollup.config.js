@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 import replace from "@rollup/plugin-replace";
 import resolve from '@rollup/plugin-node-resolve';
 import svelte from "rollup-plugin-svelte";
@@ -37,6 +39,10 @@ export default [
       "process.env.NODE_ENV": JSON.stringify(
         production ? "production" : "development"
       ),
+      ...Object.keys(process.env).reduce((sum, key) => {
+        sum[`process.env.${key}`] = JSON.stringify(process.env[key]);
+        return sum;
+      }, {}),
     }),
     postcss({
       plugins: [],
