@@ -57,7 +57,6 @@ describe("request", () => {
     const { calls } = window.fetch.mock;
     const [, options] = calls[calls.length - 1];
 
-
     expect(options.body).toBe('{"query":"param"}');
   });
 
