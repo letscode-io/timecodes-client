@@ -17,7 +17,7 @@
   "page_action": {
     "default_icon": "icons/icon19.png",
     "default_title": "page action demo",
-    "default_popup": "dist/page_action.html"
+    "default_popup": "dist/popup.html"
   },
   "permissions": [
     "identity",
