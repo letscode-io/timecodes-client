@@ -57,6 +57,7 @@ describe("request", () => {
     const { calls } = window.fetch.mock;
     const [, options] = calls[calls.length - 1];
 
+
     expect(options.body).toBe('{"query":"param"}');
   });
 
@@ -65,7 +66,7 @@ describe("request", () => {
     const { calls } = window.fetch.mock;
     const [, options] = calls[calls.length - 1];
 
-    expect(options.header).toHaveProperty("Content-Type", "application/json");
+    expect(options.headers).toHaveProperty("Content-Type", "application/json");
   });
 });
 
