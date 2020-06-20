@@ -1,4 +1,6 @@
 <script>
+  import Button from "../../components/Button.svelte";
+
   import { humanizeTime } from "../helpers/humanizeTime";
   import { accessToken, video } from "../stores";
   import { fetch } from "../helpers/fetch";
@@ -49,22 +51,31 @@
   .timecode a {
     color: rgb(6, 95, 212);
   }
+
+  .description {
+    @apply truncate py-2 col-span-2;
+  }
+
+  .timecode {
+    @apply text-center py-2 col-span-1;
+  }
+
+  .logged-in-wrapper {
+    @apply col-span-1 col-end-6;
+  }
 </style>
 
-<div class="description truncate py-2 col-span-2">{localItem.description}</div>
-<div class="timecode text-center py-2 col-span-1">
+<div class="description">{localItem.description}</div>
+<div class="timecode">
   <a href="#" on:click|preventDefault={() => setTime(localItem.seconds)}>
     {humanizeTime(localItem.seconds)}
   </a>
 </div>
 {#if isLoggedIn}
-  <div class="col-span-1 col-end-6">
-    <button
-      disabled={likeDisabled}
-      on:click|preventDefault={() => handleLike(localItem)}
-      class="default-button">
-      <div class="flex">
-        <div class="px-2">
+  <div class="logged-in-wrapper">
+    <Button isDisabled={likeDisabled} onClick={() => handleLike(localItem)}>
+      <div class="tw__flex">
+        <div class="tw__px-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -81,7 +92,6 @@
         </div>
         <div>{localItem.likesCount}</div>
       </div>
-    </button>
+    </Button>
   </div>
 {/if}
-

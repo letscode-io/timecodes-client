@@ -1,6 +1,9 @@
 <script>
   import { onMount } from "svelte";
 
+  import "../../Tailwind.svelte";
+  import Button from "../../components/Button.svelte";
+
   const LOGGED_IN_KEY = "loggedIn";
   const GOOGLE_REVOKE_TOKEN_URL = "https://accounts.google.com/o/oauth2/revoke";
 
@@ -76,36 +79,44 @@
   .popup {
     min-width: 12rem;
     min-height: 7rem;
+
+    @apply bg-gray-200 flex h-screen;
+  }
+
+  .logged-in-text {
+    @apply text-center text-base mb-2;
+  }
+
+  .log-out-button-wrapper {
+    @apply flex justify-center;
+  }
+
+  .logging-in-text {
+    @apply text-center text-base;
+  }
+
+  .login-button-wrapper {
+    @apply flex justify-center;
   }
 </style>
 
-<div class="popup bg-gray-200">
-  <div class="flex h-screen">
-    <div class="m-auto">
-      {#if loggedIn}
-        <div>
-          <p class="text-center text-base mb-2">You're logged in.</p>
-          <div class="flex justify-center">
-            <button
-              on:click|preventDefault={handleRevoke}
-              class="default-button">
-              Log out
-            </button>
-          </div>
+<div class="popup">
+  <div class="tw__m-auto">
+    {#if loggedIn}
+      <div>
+        <p class="logged-in-text">You're logged in.</p>
+        <div class="log-out-button-wrapper">
+          <Button onClick={handleRevoke}>Log out</Button>
         </div>
-      {:else}
-        {#await getAuthTokenPromise}
-          <p class="text-center text-base">Logging in...</p>
-        {:then result}
-          <div class="flex justify-center">
-            <button
-              on:click|preventDefault={handleLogin}
-              class="default-button ">
-              Login
-            </button>
-          </div>
-        {/await}
-      {/if}
-    </div>
+      </div>
+    {:else}
+      {#await getAuthTokenPromise}
+        <p class="logging-in-text">Logging in...</p>
+      {:then result}
+        <div class="login-button-wrapper">
+          <Button onClick={handleLogin}>Login</Button>
+        </div>
+      {/await}
+    {/if}
   </div>
 </div>

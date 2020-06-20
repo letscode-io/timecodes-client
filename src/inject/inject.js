@@ -1,4 +1,3 @@
-// import "../app.pcss";
 import App from "./Components/App.svelte";
 
 chrome.extension.sendMessage({}, function () {

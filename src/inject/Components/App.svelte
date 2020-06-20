@@ -1,4 +1,6 @@
 <script>
+  import "../../Tailwind.svelte";
+
   import Header from "./Header.svelte";
   import List from "./List.svelte";
   import { fetch } from "../helpers/fetch";
@@ -50,11 +52,12 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding-bottom: 20px;
     margin-bottom: 14px;
+
+    @apply text-2xl;
   }
 </style>
 
-<div class="timecodes text-2xl">
-
+<div class="timecodes">
   <Header
     on:click={handleClick}
     on:submitForm={handleSubmit}

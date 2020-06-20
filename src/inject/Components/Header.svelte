@@ -30,10 +30,23 @@
     white-space: nowrap;
     vertical-align: middle;
   }
+
+  .logged-in-wrapper {
+    @apply flex justify-end w-3/4;
+  }
+
+  .button {
+    @apply bg-transparent text-red-700
+          py-2 px-4 border border-red-500 rounded;
+  }
+
+  .button:hover {
+    @apply bg-red-500 text-white border-transparent;
+  }
 </style>
 
-<div class="flex">
-  <div class="w-1/3">
+<div class="tw__flex">
+  <div class="tw__w-1/3">
     <a href="#" class="timecodes-button" on:click>
       <span class="timecodes-icon">
         <svg
@@ -51,8 +64,8 @@
     </a>
   </div>
   {#if isLoggedIn}
-    <div class="flex justify-end w-3/4">
-      <div class="flex-1">
+    <div class="logged-in-wrapper">
+      <div class="tw__flex-1">
         {#if showForm}
           <div transition:fade>
             <Form on:submitForm />
@@ -61,10 +74,7 @@
       </div>
 
       <div>
-        <button
-          class="bg-transparent hover:bg-red-500 text-red-700 hover:text-white
-          py-2 px-4 border border-red-500 hover:border-transparent rounded"
-          on:click={() => (showForm = !showForm)}>
+        <button class="button" on:click={() => (showForm = !showForm)}>
           {#if showForm}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -93,6 +103,6 @@
       </div>
     </div>
   {:else}
-    <div class="w-1/2">Login to leave your own timecode.</div>
+    <div class="tw__w-2/3 tw__text-right">Login to leave your own timecode.</div>
   {/if}
 </div>
