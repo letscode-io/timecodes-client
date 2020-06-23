@@ -1,4 +1,4 @@
-import App from './Components/App.svelte';
+import App from "./Components/App.svelte";
 
 chrome.extension.sendMessage({}, function () {
   var readyStateCheckInterval = setInterval(function () {

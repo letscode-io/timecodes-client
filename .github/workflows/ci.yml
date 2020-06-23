@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@master
+      - name: yarn install
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      - name: yarn lint
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@master
+      - name: yarn install
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install
+      - name: yarn test
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: test

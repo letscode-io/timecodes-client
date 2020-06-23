@@ -20,7 +20,9 @@ export const videoId = readable(getVideoId(), function (set) {
 });
 
 function getVideoId() {
-  return window.location.href.match(/v\=(.+)$/)[1];
+  const id = window.location.href.match(/v\=(.+)$/);
+
+  return (id && id[1]) || "";
 }
 
 export const isLoggedIn = readable(null, function start(set) {

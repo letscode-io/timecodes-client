@@ -1,73 +1,96 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import { onMount } from 'svelte';
-  import { humanizeTime } from '../helpers/humanizeTime';
-  import { video } from '../stores';
+  import { createEventDispatcher } from "svelte";
+  import { onMount } from "svelte";
+  import { humanizeTime } from "../helpers/humanizeTime";
+  import { video } from "../stores";
 
   let secondsInit = 0;
-  let description = '';
+  let description = "";
 
   $: seconds = humanizeTime(secondsInit);
 
   const dispatch = createEventDispatcher();
 
   function sendForm() {
-    dispatch('submitForm', {
+    dispatch("submitForm", {
       seconds,
       description
     });
 
-    seconds = '';
-    description = '';
+    seconds = "";
+    description = "";
   }
 
   onMount(() => {
     secondsInit = Math.floor($video.currentTime);
-    $video.addEventListener('timeupdate', function(e) {
+    $video.addEventListener("timeupdate", function(e) {
       secondsInit = Math.floor(e.target.currentTime);
     });
   });
 </script>
 
-<form class="youanno-form" on:submit|preventDefault={sendForm}>
-  <input name="seconds" bind:value={seconds} readonly placeholder="13:37" class="time" />
-  <input name="description" bind:value={description} placeholder="Your comment goes here" />
-  <button type="submit" class="youanno-submit">Submit</button>
-</form>
-
 <style>
-  .time {
-    width: 65px;
+  .form-inner-wrapper {
+    @apply flex flex-wrap -mx-3 mb-6;
   }
 
-  input {
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    box-shadow: inset 0 1px 2px #eee;
-    padding: 3px 7px 3px 12px;
-    font-size: 14px;
+  .seconds-input-wrapper {
+    @apply w-1/6 pr-2;
   }
 
-  input:focus {
-    border: 1px solid #1c62b9;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-    outline: none;
+  .seconds-input {
+    @apply w-full text-center shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight;
   }
 
-  button {
-    padding: 1px 7px 2px;
-    border: 1px solid #d3d3d3;
-    background-color: #f8f8f8;
-    border-radius: 2px;
+  .seconds-input:focus {
+    @apply outline-none shadow-outline;
   }
 
-  button:hover {
-    border-color: #c6c6c6;
-    background-color: #f0f0f0;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  .description-input-wrapper {
+    @apply w-4/6 pr-2;
   }
 
-  button:focus {
-    background-color: #e9e9e9;
+  .description-input {
+    @apply shadow appearance-none border
+      rounded w-full py-2 px-3 text-gray-700 leading-tight;
+  }
+
+  .description-input:focus {
+    @apply outline-none shadow-outline;
+  }
+
+  .button-wrapper {
+    @apply w-1/6;
+  }
+
+  .button {
+    @apply bg-red-500 text-white py-2 px-4 rounded;
+  }
+
+  .button:hover {
+    @apply bg-red-700;
   }
 </style>
+
+<form class="timecodes-form" on:submit|preventDefault={sendForm}>
+  <div class="form-inner-wrapper">
+    <div class="seconds-input-wrapper">
+      <input
+        name="seconds"
+        bind:value={seconds}
+        readonly
+        placeholder="13:37"
+        class="seconds-input" />
+    </div>
+    <div class="description-input-wrapper">
+      <input
+        class="description-input"
+        name="description"
+        bind:value={description}
+        placeholder="Your comment goes here" />
+    </div>
+    <div class="button-wrapper">
+      <button class="button" type="submit">Submit</button>
+    </div>
+  </div>
+</form>

@@ -1,11 +1,12 @@
-require('dotenv').config()
+require("dotenv").config();
 
-import replace from "@rollup/plugin-replace";
-import resolve from '@rollup/plugin-node-resolve';
-import svelte from "rollup-plugin-svelte";
 import { terser } from "rollup-plugin-terser";
-import html from '@rollup/plugin-html';
-import postcss from 'rollup-plugin-postcss';
+import html from "@rollup/plugin-html";
+import postcss from "rollup-plugin-postcss";
+import replace from "@rollup/plugin-replace";
+import resolve from "@rollup/plugin-node-resolve";
+import svelte from "rollup-plugin-svelte";
+import sveltePreprocess from "svelte-preprocess";
 
 const production = process.env.NODE_ENV === "production";
 
@@ -27,13 +28,14 @@ export default [
   },
   plugins: [
     svelte({
+      preprocess: sveltePreprocess({ postcss: true }),
       dev: !production,
       emitCss: true,
       css: false,
     }),
     resolve({
       browser: true,
-      dedupe: ['svelte'],
+      dedupe: ["svelte"],
     }),
     replace({
       "process.env.NODE_ENV": JSON.stringify(
@@ -45,27 +47,27 @@ export default [
       }, {}),
     }),
     postcss({
-      plugins: [],
       extract: true,
     }),
     production && terser(),
-    entry.html && html({
-      fileName: `${entry.name}.html`,
-      title: "body",
-      template: ({ attributes, bundle, files, publicPath, title }) => {
-        const scripts = (files.js || [])
-        .map(({ fileName }) => {
-          return `<script src="${publicPath}${fileName}"></script>`;
-        })
-        .join('\n');
+    entry.html &&
+      html({
+        fileName: `${entry.name}.html`,
+        title: "body",
+        template: ({ attributes, bundle, files, publicPath, title }) => {
+          const scripts = (files.js || [])
+            .map(({ fileName }) => {
+              return `<script src="${publicPath}${fileName}"></script>`;
+            })
+            .join("\n");
 
-      const links = (files.css || [])
-        .map(({ fileName }) => {
-          return `<link href="${publicPath}${fileName}" rel="stylesheet">`;
-        })
-        .join('\n');
+          const links = (files.css || [])
+            .map(({ fileName }) => {
+              return `<link href="${publicPath}${fileName}" rel="stylesheet">`;
+            })
+            .join("\n");
 
-      return `<!doctype html>
+          return `<!doctype html>
 <html>
   <head>
     <title>${title}</title>
@@ -77,7 +79,7 @@ export default [
     ${scripts}
   </body>
 </html>`;
-      }
-    }),
+        },
+      }),
   ],
 }));
