@@ -1,6 +1,8 @@
 import { readable } from "svelte/store";
 
 const videoElement = document.querySelector("video.video-stream");
+const YOUTUBE_URL_REG_EXP = /(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/;
+const YOUTUBE_ID_REG_EXP = /[^0-9a-z_\-]/i;
 
 export const video = readable(videoElement);
 
@@ -20,9 +22,11 @@ export const videoId = readable(getVideoId(), function (set) {
 });
 
 function getVideoId() {
-  const id = window.location.href.match(/v\=(.+)$/);
+  const [part0, _part1, part2] = window.location.href.split(
+    YOUTUBE_URL_REG_EXP
+  );
 
-  return (id && id[1]) || "";
+  return part2 !== undefined ? part2.split(YOUTUBE_ID_REG_EXP)[0] : part0;
 }
 
 export const isLoggedIn = readable(null, function start(set) {
