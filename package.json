@@ -33,7 +33,7 @@
     "rollup-plugin-terser": "^6.1.0",
     "svelte": "^3.24.0",
     "svelte-jester": "^1.0.6",
-    "svelte-preprocess": "4.0.8",
+    "svelte-preprocess": "4.6.3",
     "tailwindcss": "^1.6.0"
   },
   "browserslist": [
